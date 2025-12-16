@@ -1,0 +1,49 @@
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 2rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  font-family: "Nunito Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+.theme-toggle:active {
+  transform: scale(0.98);
+}
+
+.theme-toggle__icon {
+  font-size: 1.25em;
+  line-height: 1;
+}
+
+.theme-toggle__label {
+  line-height: 1;
+}
+
+.theme-toggle--small {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.theme-toggle--small .theme-toggle__icon {
+  font-size: 1em;
+}
+
+.theme-toggle--medium {
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+}
+
+.theme-toggle--large {
+  padding: 0.75rem 1.25rem;
+  font-size: 1.125rem;
+}
