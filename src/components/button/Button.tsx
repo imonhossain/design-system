@@ -1,5 +1,5 @@
+import type { CSSProperties } from "react";
 import { useThemeContext } from "../../theme";
-import "./button.css";
 
 export interface ButtonProps {
   /** Is this the principal call to action on the page? */
@@ -14,36 +14,81 @@ export interface ButtonProps {
   onClick?: () => void;
 }
 
-/** Primary UI component for user interaction */
-export const Button = ({
+/**
+ * Get Tailwind classes for button size
+ */
+function getSizeClasses(size: ButtonProps["size"]): string {
+  const sizes = {
+    small: "px-4 py-2.5 text-xs",
+    medium: "px-5 py-2.75 text-sm",
+    large: "px-6 py-3 text-base",
+  };
+
+  return sizes[size || "medium"];
+}
+
+/**
+ * Get dynamic styles based on theme and variant
+ */
+function getButtonStyles(
+  primary: boolean,
+  backgroundColor: string | undefined,
+  themeColors: {
+    primary: string;
+    background: string;
+    text: string;
+    border: string;
+  }
+): CSSProperties {
+  if (backgroundColor) {
+    return { backgroundColor };
+  }
+
+  if (primary) {
+    return {
+      backgroundColor: themeColors.primary,
+      color: themeColors.background,
+    };
+  }
+
+  return {
+    backgroundColor: "transparent",
+    color: themeColors.text,
+    borderColor: themeColors.border,
+  };
+}
+
+/**
+ * Primary UI component for user interaction
+ *
+ * @example
+ * ```tsx
+ * <Button label="Click me" primary size="medium" onClick={() => {}} />
+ * ```
+ */
+export function Button({
   primary = false,
   size = "medium",
   backgroundColor,
   label,
   ...props
-}: ButtonProps) => {
+}: ButtonProps) {
   const { theme } = useThemeContext();
 
-  const mode = primary ? "storybook-button--primary" : "storybook-button--secondary";
+  const baseClasses =
+    "inline-block cursor-pointer font-bold leading-none rounded-full transition-all duration-200 ease-in-out hover:opacity-90 active:scale-95";
 
-  const buttonStyle = backgroundColor
-    ? { backgroundColor }
-    : primary
-      ? { backgroundColor: theme.colors.primary, color: theme.colors.background }
-      : {
-          backgroundColor: "transparent",
-          color: theme.colors.text,
-          borderColor: theme.colors.border,
-        };
+  const variantClasses = primary ? "border-none" : "border border-solid bg-transparent";
+
+  const sizeClasses = getSizeClasses(size);
+
+  const className = `${baseClasses} ${variantClasses} ${sizeClasses}`;
+
+  const style = getButtonStyles(primary, backgroundColor, theme.colors);
 
   return (
-    <button
-      className={["storybook-button", `storybook-button--${size}`, mode].join(" ")}
-      style={buttonStyle}
-      type="button"
-      {...props}
-    >
+    <button className={className} style={style} type="button" {...props}>
       {label}
     </button>
   );
-};
+}
